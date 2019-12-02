@@ -1,17 +1,131 @@
 <template>
-  <div>
-    <h1>购物车</h1>
-  </div>
+    <div class="shopcar-container">
+
+        <div class="goods-list">
+            <div class="iui-card goodslist" v-for="(item,i) in goodslist" :key="item.id">
+                <div class="iui-card-content">
+                    <div class="iui-card-content-inner">
+                        <cube-switch v-model="$store.getters.getGoodsSeleted[item.id]" @input="selectedChanged(item.id,$store.getters.getGoodsSeleted[item.id])"></cube-switch>
+                        <img :src="item.thumb_path">
+                        <div class="info">
+                            <h2>{{ item.title }}</h2>
+                            <p>
+                                <span class="price">￥{{ item.sell_price }}</span>
+                                <!-- <numbox :initcount="$store.getters.getGoodsCount[item.id]" :goodsid="item.id"></numbox> -->
+                                <!-- item.id用于删除store中的，i索引用于删除goodslist中的数据 -->
+                                <a href="#" @click.prevent="remove(item.id,i)">删除</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="iui-card total">
+                <div class="iui-card-content">
+                    <div class="iui-card-content-inner jiesuan">
+                        <div class="left">
+                            <p>总计(不包含运费)</p>
+                            <p>已勾选商品<span class="red">{{ $store.getters.getGoodsCountAndAmount.count }}</span>件，总价<span class="red">￥{{ $store.getters.getGoodsCountAndAmount.amount }}</span>元</p>
+                        </div>
+                        <cube-button :inline=true>去结算</cube-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </template>
 
 <script>
+// import numbox from '../subcomponents/shopcar_numbox.vue'
+
 export default{
     data(){
-        return{}
+        return {
+            goodslist:[]
+        }
+    },
+    components:{
+        // numbox
+    },
+    methods:{
+        getGoodsList(){
+            var idArr=[]
+            this.$store.state.car.forEach(item=>idArr.push(item.id))
+            if (idArr.length<=0) {return}
+            this.$http.get('api/goods/getshopcarlist/'+idArr.join(",")).then(result=>{
+                if (result.data.status===0) {
+                    this.goodslist=result.data.message
+                }
+            })
+        },
+        remove(id,index){
+            this.goodslist.splice(index,1)
+            this.$store.commit("removeFormCar",id)
+        },
+        selectedChanged(id,val){
+            this.$store.commit("updateGoodsSeleted",{id,selected:val})
+        }
+    },
+    created(){
+        this.getGoodsList()
     }
 }
 </script>
 
-<style>
-    
+<style lang="scss" scoped>
+.shopcar-container{
+    min-height: calc(100vh - 3rem);
+    background-color: #f0f3f6;
+    .goods-list{
+        .iui-card{
+            background-color: #fff;
+            padding: .7rem 0;
+            &.goodslist{
+                padding: .3rem 1rem;
+
+            }
+            &.total{
+                margin-top: 1rem;
+                padding: 1rem;
+            }
+        }
+        .iui-card-content-inner{
+            display:flex;
+            align-items:center;
+        }
+        img{
+            margin: 0.6rem;
+            width: 3.5rem;
+            height: 3.5rem;
+        }
+        h2{
+            font-size:.9rem;
+            line-height: 1.2;
+            padding-bottom: .1rem;
+        }
+        .info{
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            .price{
+                color:#e91e63;
+                font-weight:bold;
+                padding-right: 1rem;
+            }
+        }
+    }
+    .jiesuan{
+        line-height: 1.5;
+        color: #333;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        .red{
+            color:#e91e63;
+            font-weight:bold;
+            font-size:16px;
+        }
+    }
+}
 </style>

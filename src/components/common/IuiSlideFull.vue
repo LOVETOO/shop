@@ -1,9 +1,9 @@
 <template>
-  <div id="iui_slide">
+  <div id="iui_slide_full">
     <cube-slide ref="slide" :data="items">
       <cube-slide-item v-for="(item, index) in items" :key="index">
         <a :href="item.url">
-          <img :src="item.image">
+          <img :src="item.img">
         </a>
       </cube-slide-item>
     </cube-slide>
@@ -20,12 +20,11 @@ export default {
 
 
 <style lang="scss">
-#iui_slide{
-    height: 10rem;
+#iui_slide_full{
+    height: 100vw;
     .cube-slide{
         .cube-slide-group{
             .cube-slide-item{
-                padding: 0 1rem;
                 a{
                     img{
                         height: auto;
@@ -36,7 +35,7 @@ export default {
             }
         }
         .cube-slide-dots{
-            top: 8.5rem;
+            top: 24rem;
             span{
                 margin: 0 0.1rem;
                 width: 1rem;
