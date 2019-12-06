@@ -1,6 +1,6 @@
 <template>
   <div id="iui_slide_full">
-    <cube-slide ref="slide" :data="items">
+    <cube-slide ref="slide" :data="items" :loop=false>
       <cube-slide-item v-for="(item, index) in items" :key="index">
         <a :href="item.url">
           <img :src="item.img">

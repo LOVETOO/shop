@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition :name="transitionName">
+      <router-view class="iui-app-view"></router-view>
+    </transition>
 
     <cube-tab-bar v-model="selectLabel" :data="tabs" @change="changeHandler">
       <cube-tab v-for="(item, index) in tabs" 
@@ -18,6 +20,7 @@ import {mapGetters} from "vuex";
 export default {
   data() {
     return {
+      transitionName: 'route-forward',
       selectLabel: "/",
       tabs: [
         {
@@ -44,7 +47,7 @@ export default {
   watch: {
     $route(route) {
       this.selectLabel = route.path
-      // this.transitionName = this.$router.transitionName
+      this.transitionName = this.$router.transitionName
     }
   },
   computed: {
@@ -54,7 +57,17 @@ export default {
     changeHandler(val) {
       this.$router.push(val);
     }
-  }
+  },
+  // 不能调用this,该路由调用时，组件并未被初始化，其他可以；在渲染该组件的对应路由被 confirm 前调用
+  // beforeRouteEnter(to, from, next){
+  //     next(vm => {
+  //       // 通过 `vm` 访问组件实例
+  //     })
+  // },
+  // 在当前路由改变，但是该组件被复用时调用，比如带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候
+  // beforeRouteUpdate(to, from, next){},
+  // 导航离开该组件的对应路由时调用
+  // beforeRouteLeave(to, from, next){}
 };
 </script>
 
@@ -98,5 +111,33 @@ export default {
       color: #e86b69;
     }
   }
+}
+
+
+
+// 路由动画
+.route-forward-enter {
+  transform: translate3d(100%, 0, 0);
+}
+.route-back-enter {
+  transform: translate3d(-100%, 0, 0);
+}
+.route-forward-leave-to {
+  transform: translate3d(-100%, 0, 0);
+}
+.route-back-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+.route-forward-enter-active,
+.route-forward-leave-active,
+.route-back-enter-active,
+.route-back-leave-active {
+  transition: all .3s ease;
+}
+.iui-app-view{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 </style>

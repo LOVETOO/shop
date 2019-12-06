@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iui-header></iui-header>
+    <iui-header :title="headerTitle"></iui-header>
     <div class="iui-home-slide">
         <iui-slide :items="SlideItems"></iui-slide>
     </div>
@@ -8,10 +8,10 @@
         <cube-slide ref="slide" :data="slides" :loop=false :autoPlay=false>
           <cube-slide-item v-for="(item, index) in slides" :key="index">
             <ul>
-                <a :href="slidesItems.url" v-for="(slidesItems,slidesIndexs) in item.slidesItems" :key="slidesIndexs">
+                <router-link :to="slidesItems.url" v-for="(slidesItems,slidesIndexs) in item.slidesItems" :key="slidesIndexs">
                   <img :src="slidesItems.image">
                   <span>{{ slidesItems.dec }}</span>
-                </a>
+                </router-link>
             </ul>
           </cube-slide-item>
         </cube-slide>
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import IuiSlide from "../../components/common/IuiSlide"
-import IuiHeader from "../../components/common/IuiHeader"
+import IuiSlide from "@/components/common/IuiSlide"
+import IuiHeader from "@/components/common/IuiHeader"
 import slider1 from '@/images/slider1.png'
 import slider2 from '@/images/slider2.png'
 import slider3 from '@/images/slider3.png'
@@ -36,6 +36,7 @@ import icon5 from '@/images/icon5.png'
 export default{
     data(){
         return{
+            headerTitle:"LOVETOO",
             SlideItems:[
             {
                 url:'/',
@@ -118,7 +119,7 @@ export default{
 
 <style lang="scss">
 .iui-home-slide{
-    padding: 3rem 0 .5rem;
+    padding: 4rem 0 .5rem;
 }
 
 .iui-home-slides{

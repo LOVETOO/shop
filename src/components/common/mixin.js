@@ -1,5 +1,6 @@
 
 export const MixinMethods = {
+    data(){},
     methods: {
         showToastMask (msg) {
           const toast = this.$createToast({
@@ -8,5 +9,6 @@ export const MixinMethods = {
           })
           toast.show()
         }
-    }
+    },
+    created(){}
 }

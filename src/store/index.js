@@ -11,7 +11,8 @@ Vue.use(Vuex)
 var car=JSON.parse(localStorage.getItem('car') || '[]')
 const state = {
     count:0,
-    car:car
+    car:car,
+    isLogin: localStorage.getItem("token") ? true : false
 }
 
 

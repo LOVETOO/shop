@@ -1,5 +1,6 @@
 <template>
     <div class="newsinfo-container">
+        <iui-header :title="newsinfoTitle"></iui-header>
         <h3 class="title">{{ newsinfo.title }}</h3>
         <p class="subtitle">
             <span>发布时间：{{ newsinfo.add_time | dateFormat }}</span>
@@ -13,10 +14,12 @@
 
 <script>
 import comment from '@/components/common/IuiComment.vue'
+import IuiHeader from "@/components/common/IuiHeader"
 
 export default{
     data(){
         return {
+            newsinfoTitle:"LOVETOO",
             id:this.$route.params.id,
             newsinfo:{}
         }
@@ -31,7 +34,8 @@ export default{
         }
     },
     components:{
-        'comment-box':comment
+        'comment-box':comment,
+        IuiHeader
     },
     created(){
         this.getNewsInfo()
@@ -41,7 +45,8 @@ export default{
 
 <style lang="scss">
 .newsinfo-container{
-    padding:1rem;
+    padding: 4rem 1rem 5rem;
+    box-sizing: border-box;
     .title{
         font-size: 1.4rem;
         color: #222;

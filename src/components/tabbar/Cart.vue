@@ -5,15 +5,17 @@
             <div class="iui-card goodslist" v-for="(item,i) in goodslist" :key="item.id">
                 <div class="iui-card-content">
                     <div class="iui-card-content-inner">
-                        <cube-switch v-model="$store.getters.getGoodsSeleted[item.id]" @input="selectedChanged(item.id,$store.getters.getGoodsSeleted[item.id])"></cube-switch>
+                        <cube-switch v-model="getGoodsSeleted[item.id]" @input="selectedChanged(item.id,getGoodsSeleted[item.id])"></cube-switch>
                         <img :src="item.thumb_path">
                         <div class="info">
                             <h2>{{ item.title }}</h2>
                             <p>
                                 <span class="price">￥{{ item.sell_price }}</span>
-                                <!-- <numbox :initcount="$store.getters.getGoodsCount[item.id]" :goodsid="item.id"></numbox> -->
+                                <iui-cart-mun-box
+                                    :initcount="getGoodsCount[item.id]"
+                                    :goodsid="item.id"></iui-cart-mun-box>
                                 <!-- item.id用于删除store中的，i索引用于删除goodslist中的数据 -->
-                                <a href="#" @click.prevent="remove(item.id,i)">删除</a>
+                                <a class="delgoods" href="#" @click.prevent="remove(item.id,i)">删除</a>
                             </p>
                         </div>
                     </div>
@@ -27,7 +29,7 @@
                             <p>总计(不包含运费)</p>
                             <p>已勾选商品<span class="red">{{ $store.getters.getGoodsCountAndAmount.count }}</span>件，总价<span class="red">￥{{ $store.getters.getGoodsCountAndAmount.amount }}</span>元</p>
                         </div>
-                        <cube-button :inline=true>去结算</cube-button>
+                        <cube-button :inline=true @click="settleAccounts()">去结算</cube-button>
                     </div>
                 </div>
             </div>
@@ -37,7 +39,8 @@
 </template>
 
 <script>
-// import numbox from '../subcomponents/shopcar_numbox.vue'
+import IuiCartMunBox from '@/components/common/IuiCartMunBox.vue'
+import {mapGetters} from 'vuex'
 
 export default{
     data(){
@@ -46,7 +49,10 @@ export default{
         }
     },
     components:{
-        // numbox
+        IuiCartMunBox
+    },
+    computed:{
+        ...mapGetters(['getGoodsSeleted','getGoodsCount'])
     },
     methods:{
         getGoodsList(){
@@ -65,6 +71,9 @@ export default{
         },
         selectedChanged(id,val){
             this.$store.commit("updateGoodsSeleted",{id,selected:val})
+        },
+        settleAccounts(){
+            this.$root.showToast("待更新")
         }
     },
     created(){
@@ -82,7 +91,8 @@ export default{
             background-color: #fff;
             padding: .7rem 0;
             &.goodslist{
-                padding: .3rem 1rem;
+                padding: 1rem;
+                border: 1px solid #f0f3f6;
 
             }
             &.total{
@@ -93,25 +103,35 @@ export default{
         .iui-card-content-inner{
             display:flex;
             align-items:center;
-        }
-        img{
-            margin: 0.6rem;
-            width: 3.5rem;
-            height: 3.5rem;
-        }
-        h2{
-            font-size:.9rem;
-            line-height: 1.2;
-            padding-bottom: .1rem;
-        }
-        .info{
-            display:flex;
-            flex-direction:column;
-            justify-content:space-between;
-            .price{
-                color:#e91e63;
-                font-weight:bold;
-                padding-right: 1rem;
+            .cube-switch{
+                width: 4rem;
+            }
+            img{
+                margin-left: 0.3rem;
+                margin-right: .7rem;
+                width: 3.5rem;
+                height: 3.5rem;
+                display: flex;
+            }
+            h2{
+                font-size:.9rem;
+                line-height: 1.2;
+                padding-bottom: .1rem;
+            }
+            .info{
+                width: 15rem;
+                display:flex;
+                flex-direction:column;
+                justify-content:space-between;
+                .price{
+                    color:#e91e63;
+                    font-weight:bold;
+                    padding-right: .5rem;
+                }
+                .delgoods{
+                    padding-left: .6rem;
+                    font-size: .8rem;
+                }
             }
         }
     }

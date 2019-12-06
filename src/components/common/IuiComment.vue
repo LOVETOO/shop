@@ -23,6 +23,10 @@
 import {MixinMethods} from '@/components/common/mixin.js'
 
 export default{
+    // 组件内递归调用自己
+    // 使用 keep-alive时可以使用include和exclude指定需要缓存和不需要缓存的组件
+    // 调试时更好定位
+    name:"IuiComment",
     data(){
         return {
             pageIndex:1,

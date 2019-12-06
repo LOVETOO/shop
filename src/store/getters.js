@@ -1,39 +1,36 @@
 export default {
-    optCount:function(state){
-        return '111'+state.count
-    },
     getAllCount(state){
-        var c=0
+        let count=0
         state.car.forEach(item=>{
-            c+=item.count
+            count+=item.count
         })
-        return c
+        return count
     },
     getGoodsCount(state){
-        var o={}
+        let count={}
         state.car.forEach(item=>{
-            o[item.id]=item.count
+            count[item.id]=item.count
         })
-        return o
+        return count
     },
     getGoodsSeleted(state){
-        var o={}
+        let selected={}
         state.car.forEach(item=>{
-            o[item.id]=item.selected
+            selected[item.id]=item.selected
         })
-        return o
+        return selected
     },
     getGoodsCountAndAmount(state){
-        var o={
+        let goods={
             count:0,
             amount:0
         }
         state.car.forEach(item=>{
             if (item.selected) {// 被勾选
-                o.count+=item.count,
-                o.amount+=item.price*item.count
+                goods.count+=item.count,
+                goods.amount+=item.price*item.count
             }
         })
-        return o
+        return goods
     }
 }

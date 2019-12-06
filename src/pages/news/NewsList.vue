@@ -1,5 +1,6 @@
 <template>
     <div>
+        <iui-header :title="newslistTitle"></iui-header>
         <ul class="iui-news-list">
             <li v-for="item in newslist" :key="item.id">
                 <router-link :to="'/home/newsinfo/'+item.id">
@@ -19,10 +20,12 @@
 
 <script>
 import {MixinMethods} from '@/components/common/mixin.js'
+import IuiHeader from "@/components/common/IuiHeader"
 
 export default{
     data(){
         return {
+            newslistTitle:"新闻资讯",
             newslist:[]
         }
     },
@@ -38,6 +41,9 @@ export default{
             }).catch()
         }
     },
+    components:{
+        IuiHeader
+    },
     created(){
         this.getNewsList()
     }
@@ -48,7 +54,7 @@ export default{
 .iui-news-list{
     background-color: #f0f3f6;
     min-height: calc(100vh - 5.8rem);
-    padding: .8rem .8rem 2rem;
+    padding: 3.9rem .8rem 4rem;
     li{
         background-color: #fff;
         margin-bottom: 1rem;

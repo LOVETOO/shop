@@ -1,5 +1,6 @@
 <template>
     <div class="goodsinfo-container">
+        <iui-header :title="goodsinfoTitle"></iui-header>
 
         <transition
         @before-enter="beforeEnter"
@@ -23,7 +24,7 @@
                     <p class="price">
                         市场价：<del>￥{{ goodsinfo.market_price }}</del>&nbsp;&nbsp;销售价：<span class="now_price">￥{{ goodsinfo.sell_price }}</span>
                     </p>
-                    <!-- <p>购买数量：<iui-mun-box @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></iui-mun-box></p> -->
+                    <p>购买数量：<iui-mun-box @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></iui-mun-box></p>
                     <p class="buybtn">
                         <cube-button :inline=true>立即购买</cube-button>
                         <cube-button :inline=true @click="addToShopCar">加入购物车</cube-button>
@@ -41,9 +42,19 @@
                     <p>上架时间：{{ goodsinfo.add_time | dateFormat }}</p>
                 </div>
             </div>
-            <div class="iui-card-footer">
-                <cube-button @click="goDesc(id)">图文介绍</cube-button>
-                <cube-button @click="goComment(id)">商品评论</cube-button>
+        </div>
+
+        <div class="iui-card other">
+            <div class="other-nav">
+                <span
+                :class="{'goodsNavActive' : goodsOtherIndex==index}"
+                v-for="(item,index) in goodsNav"
+                :key="index"
+                @click="goodsNavToggle(index,item.view)">{{ item.type }}</span>
+            </div>
+            <div class="other-body">
+                <div v-show="curView=='dec' ? true : false" class="goods-dec-content" v-html="goodsdec.content"></div>
+                <iui-comment :id="id" v-show="curView=='com' ? true : false"></iui-comment>
             </div>
         </div>
 
@@ -52,17 +63,33 @@
 
 <script>
 import IuiSlideFull from '@/components/common/IuiSlideFull.vue'
-// import IuiMunBox from '@/components/common/IuiMunBox.vue'
+import IuiMunBox from '@/components/common/IuiMunBox.vue'
+import IuiComment from '@/components/common/IuiComment.vue'
+import IuiHeader from "@/components/common/IuiHeader"
 
 export default{
     data(){
         return {
+            goodsinfoTitle:"LOVETOO",
             id:this.$route.params.id,
             lunbotu:[],
             goodsinfo:{},
             ballFlag:false,
-            selectedCount:1
-        }
+            selectedCount:1,
+            goodsdec:'',
+            goodsOtherIndex:0,
+            curView:"dec",
+            goodsNav:[
+                {type:"商品详情",view:"dec"},
+                {type:"商品评论",view:"com"}
+            ]
+            }
+    },
+    components:{
+        IuiSlideFull,
+        IuiMunBox,
+        IuiComment,
+        IuiHeader
     },
     methods:{
         getLunbotu(){
@@ -122,29 +149,37 @@ export default{
         },
         getSelectedCount(count){
             this.selectedCount=count
-            this.$root.showToast('父组件拿到的数量是'+this.selectedCount)
+            window.console.log('父组件拿到的数量是'+this.selectedCount)
+        },
+        getGoodsDesc(){
+            this.$http.get('api/goods/getdesc/'+this.id).then(result=>{
+                if (result.data.status===0) {
+                    this.goodsdec=result.data.message[0]
+                }
+            })
+        },
+        goodsNavToggle(index,view){
+            this.goodsOtherIndex=index
+            this.curView=view
         }
-    },
-    components:{
-        IuiSlideFull,
-        // IuiMunBox
     },
     created(){
         this.getLunbotu()
         this.getGoodsInfo()
+        this.getGoodsDesc()
     }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .iui-buy-info-style{
     padding: 1rem;
-    margin: 0 .8rem .8rem;
+    margin: 0 0 .8rem;
 }
 
 .goodsinfo-container{
-    padding: 0 0 2rem;
-    min-height: calc(100vh - 5.8rem);
+    padding: 3rem 0 3.5rem;
+    min-height: calc(100vh - 3rem);
     background-color: #f0f3f6;
     .iui-card {
         background-color: #fff;
@@ -187,6 +222,38 @@ export default{
                 line-height: 1.5;
                 color: #858a90;
                 font-size: .9rem;
+            }
+        }
+        &.other{
+            @extend .iui-buy-info-style;
+            .other-nav{
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #f0f3f6;
+                span{
+                    font-size: 1.2rem;
+                    padding: 0.4rem;
+                    margin-right: .4rem;
+                    display: inline-block;
+                    &.goodsNavActive{
+                        color: #fff;
+                        background-color: #4a4c5b;
+                    }
+                }
+            }
+            .other-body{
+                .goods-dec-content{
+                    padding-top: 1rem;
+                    color: #333;
+                    line-height: 1.5;
+                    p{
+                        margin:0;
+                        img{
+                            width:100%;
+                            height:auto;
+                            display:block;
+                        }
+                    }
+                }
             }
         }
     }

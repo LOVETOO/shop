@@ -1,5 +1,6 @@
 <template>
     <div class="goods-list">
+        <iui-header :title="goodslistTitle"></iui-header>
         <div class="goods-item" v-for="item in goodslist" :key="item.id" @click="goDetail(item.id)">
             <img :src="item.img_url">
             <h1 class="title">{{ item.title }}</h1>
@@ -21,16 +22,21 @@
 
 <script>
 import {MixinMethods} from '@/components/common/mixin.js'
+import IuiHeader from "@/components/common/IuiHeader"
 
 export default{
     data(){
         return {
+            goodslistTitle:"产品列表",
             pageindex:1,
             goodslist:[],
             hasgoods:true
         }
     },
     mixins:[MixinMethods],
+    components:{
+        IuiHeader
+    },
     methods:{
         getGoodsList(){
             this.$http.get('api/getgoods?pageindex='+this.pageindex).then(result=>{
@@ -63,7 +69,8 @@ export default{
 .goods-list{
     display:flex;
     flex-wrap:wrap;
-    padding: .8rem .8rem 2rem;
+    padding: 3.8rem .8rem 5rem;
+    box-sizing: border-box;
     justify-content:space-between;
     background-color: #f0f3f6;
     .goods-item{
