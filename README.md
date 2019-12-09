@@ -3,4 +3,4 @@
 ### 技术栈：vue + vuex + vue-router + webpack + axios + scss
 
 ### 演示地址
-[移动端](http://sc.iaiui.com/home).
+[移动端](http://shop.iaiui.com/)

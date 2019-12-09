@@ -12,6 +12,7 @@ import NewsList from "@/pages/news/NewsList"
 import NewsInfo from "@/pages/news/NewsInfo"
 import GoodsList from "@/pages/goods/GoodsList"
 import GoodsInfo from "@/pages/goods/GoodsInfo"
+import NotFound from "@/pages/notfound/NotFound"
 
 
 Vue.use(History)
@@ -28,6 +29,12 @@ const router = new Router({
     mode:'history',
     base:process.env.BASE_URL,
     routes:[{
+            path:'*',
+            component:NotFound,
+            meta:{
+                title:'404'
+            }
+        },{
             path:'/',
             redirect:'/home'
         },{
