@@ -39,12 +39,15 @@ const router = new Router({
             name:'cart',
             component:Cart,
             meta:{
-                auto:true
+                auto:false
             }
         },{
             path:'/mine',
             name:'mine',
-            component:Mine
+            component:Mine,
+            meta:{
+                auto:true
+            }
         },{
             path:'/login',
             name:'login',

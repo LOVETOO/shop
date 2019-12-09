@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <iui-header :title="loginType ? '登录' : '密码登陆'"></iui-header>
+    <iui-header :title="loginType ? '登录' : '密码登录'"></iui-header>
 
     <div class="login-body">
         <form class="login-form" v-if="loginType">
@@ -18,7 +18,7 @@
             </section>
         </form>
 
-        <div class="login" @click="longin()">登 录</div>
+        <div class="login" @click="login()">登 录</div>
         <div class="forget"><router-link to="/forget" v-if="!loginType">忘记密码？</router-link></div>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default{
         IuiHeader
     },
     methods:{
-        longin(){
+        login(){
             if (this.loginWay) {
                 this.$root.showToast("待更新")
             }else{
@@ -53,6 +53,24 @@ export default{
                     this.$root.showToast("请输入密码")
                     return
                 }
+                let model={
+                    userAccount:this.userAccount,
+                    passWord:this.passWord
+                }
+                this.$http.get('http://localhost:8080/api/login', {params:model}).then(res => {
+                    const { code, token } = res.data
+                    if (code) { // 登录成功
+                        this.$root.showToast('登录成功')
+                        this.$store.commit("setLoginState", true)
+                        localStorage.setItem("token", token)
+                        const path = this.$route.query.redirect || "/"
+                        setTimeout(()=>{this.$router.push(path)},1000)
+                    }
+                    return code
+                }).catch(error => {
+                    let txt=error.message || error.response.data.message || "登录失败"
+                    this.$root.showToast(txt)
+                })
             }
         }
     }

@@ -46,5 +46,8 @@ export default {
             }
         })
         localStorage.setItem("car",JSON.stringify(state.car))
+    },
+    setLoginState(state, status) {
+      state.isLogin = status
     }
 }
