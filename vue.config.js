@@ -20,7 +20,18 @@ module.exports = {
       // proxy: {
       //   "/api": {
       //       target: "http://127.0.0.1:3000/", 
-      //       changOrigin: true
+      //       changOrigin: true, //改变源
+      //       pathRewrite: {
+      //         "^/api": "/" //路径重写
+      //       }
+      //   },
+      //   // 此处若使用 "/api1" 类似命名可能会导致请求时只截取api部分接口出现404错误，因此命名时尽量避免此类命名方式。
+      //   "/iui": {
+      //       target: "http://127.0.0.1:3000/", 
+      //       changOrigin: true, //改变源
+      //       pathRewrite: {
+      //         "^/iui": "/" //路径重写
+      //       }
       //   }
       // },
 
@@ -28,7 +39,6 @@ module.exports = {
         // 模拟后台服务器express
         app.get("/api/login", function(req, res) {
           const { userAccount, passWord } = req.query
-          window.console.log(userAccount, passWord)
 
           if (userAccount == "test" && passWord == "test") {
             res.json({ code: 1, token: "lovetoo" })
@@ -48,7 +58,13 @@ module.exports = {
         
         // 获取登录用户信息
         app.get("/api/userinfo", auth, function(req, res) {
-          res.json({ code: 1, data: { name: "iui", age: 18 } })
+          res.json({ code: 1, data: {
+            id:20191210,
+            name: "车文烨",
+            age: 25,
+            avatar:"./images/avatar.jpg",
+            lv:3
+          }})
         })
       }
     }

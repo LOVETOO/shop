@@ -1,10 +1,10 @@
 <template>
     <div>
-        <iui-header :title="'页面找不到'"></iui-header>
+        <iui-header :title="'页面/文件找不到'"></iui-header>
         <div class="notfound-container">
             <div class="body">
                 <h2>404</h2>
-                <div>页面找不到</div>
+                <div>页面/文件找不到</div>
             </div>
         </div>
     </div>

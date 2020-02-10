@@ -46,7 +46,7 @@ const router = new Router({
             name:'cart',
             component:Cart,
             meta:{
-                auto:false
+                auto:true
             }
         },{
             path:'/mine',

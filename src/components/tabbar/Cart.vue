@@ -1,5 +1,6 @@
 <template>
     <div class="shopcar-container">
+        <iui-header :title="'购物车'"></iui-header>
 
         <div class="goods-list">
             <div class="iui-card goodslist" v-for="(item,i) in goodslist" :key="item.id">
@@ -40,6 +41,7 @@
 
 <script>
 import IuiCartMunBox from '@/components/common/IuiCartMunBox.vue'
+import IuiHeader from "@/components/common/IuiHeader"
 import {mapGetters} from 'vuex'
 
 export default{
@@ -49,7 +51,8 @@ export default{
         }
     },
     components:{
-        IuiCartMunBox
+        IuiCartMunBox,
+        IuiHeader
     },
     computed:{
         ...mapGetters(['getGoodsSeleted','getGoodsCount'])
@@ -84,6 +87,7 @@ export default{
 
 <style lang="scss" scoped>
 .shopcar-container{
+    padding-top: 3rem;
     min-height: calc(100vh - 3rem);
     background-color: #f0f3f6;
     .goods-list{

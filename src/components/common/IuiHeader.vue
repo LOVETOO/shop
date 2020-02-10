@@ -1,13 +1,16 @@
 <template>
   <div id="iui_header">
     <header class="clear">
-        <div class="head-back" v-show="isHome() && $routerHistory.canBack()" @click="back">
+        <div class="left head-back" v-show="isHome() && $routerHistory.canBack()" @click="back">
             <i class="cubeic-back"></i>
             <span>返回</span>
         </div>
         <h1 class="head-title">{{ title }}</h1>
-        <div class="head-extend">
+        <div class="head-extend center">
           <slot></slot>
+        </div>
+        <div class="right">
+            <slot name="right"></slot>
         </div>
     </header>
   </div>

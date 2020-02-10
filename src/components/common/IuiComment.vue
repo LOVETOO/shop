@@ -1,5 +1,5 @@
 <template>
-    <div class="cmt-container">
+    <div class="iui-cmt-container">
         <h3>发布评论</h3>
         <textarea placeholder="请输入评论内容（最多120字）" maxlength="120" v-model="msg"></textarea>
 
@@ -81,7 +81,7 @@ export default{
 </script>
 
 <style lang="scss" scoped>
-.cmt-container{
+.iui-cmt-container{
     h3{
         font-size: 1.3rem;
         padding-top: 3rem;

@@ -21,11 +21,10 @@ new Vue({
   render: h => h(App),
   methods: {
     showToast (msg) {
-      const toast = this.$createToast({
+      this.$createToast({
         txt: msg,
         type: 'txt'
-      })
-      toast.show()
+      }).show()
     }
   }
 }).$mount('#app')

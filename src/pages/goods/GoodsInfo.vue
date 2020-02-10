@@ -70,7 +70,7 @@ import IuiHeader from "@/components/common/IuiHeader"
 export default{
     data(){
         return {
-            goodsinfoTitle:"LOVETOO",
+            goodsinfoTitle:"产品详情",
             id:this.$route.params.id,
             lunbotu:[],
             goodsinfo:{},
